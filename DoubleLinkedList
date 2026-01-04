@@ -1,0 +1,107 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+struct node {
+    int data;
+    struct node *prev;
+    struct node *next;
+};
+
+struct node *head = NULL;
+
+void insertFirst(int x) {
+    struct node *n = malloc(sizeof(struct node));
+    n->data = x;
+    n->prev = NULL;
+    n->next = head;
+
+    if (head != NULL)
+        head->prev = n;
+
+    head = n;
+}
+
+void insertAfter(int key, int x) {
+    struct node *p = head;
+
+    while (p != NULL) {
+        if (p->data == key) {
+            struct node *n = malloc(sizeof(struct node));
+            n->data = x;
+
+            n->next = p->next;
+            n->prev = p;
+
+            if (p->next != NULL)
+                p->next->prev = n;
+
+            p->next = n;
+            return;
+        }
+        p = p->next;
+    }
+}
+
+void deleteNode(int key) {
+    struct node *p = head;
+
+    while (p != NULL) {
+        if (p->data == key) {
+
+            if (p->prev != NULL)
+                p->prev->next = p->next;
+            else
+                head = p->next;
+
+            if (p->next != NULL)
+                p->next->prev = p->prev;
+
+            free(p);
+            return;
+        }
+        p = p->next;
+    }
+}
+
+void traverseForward() {
+    struct node *p = head;
+    printf("Forward: ");
+    while (p != NULL) {
+        printf("%d ", p->data);
+        p = p->next;
+    }
+    printf("\n");
+}
+
+void traverseBackward() {
+    if (head == NULL) return;
+
+    struct node *p = head;
+    while (p->next != NULL)
+        p = p->next;
+
+    printf("Backward: ");
+    while (p != NULL) {
+        printf("%d ", p->data);
+        p = p->prev;
+    }
+    printf("\n");
+}
+
+int main() {
+    insertFirst(10);
+    insertFirst(5);
+    insertFirst(2);
+
+    traverseForward();
+    traverseBackward();
+
+    insertAfter(5, 7);
+    traverseForward();
+
+    deleteNode(10);
+    traverseForward();
+    traverseBackward();
+
+    return 0;
+}
