@@ -1,0 +1,54 @@
+#include <stdio.h>
+
+#define MAX 100
+
+int arr[MAX];
+int size = 0;
+
+void insert(int pos, int x) {
+    if (size >= MAX) return;
+    if (pos < 0 || pos > size) return;
+
+    for (int i = size; i > pos; i--) {
+        arr[i] = arr[i - 1];
+    }
+    arr[pos] = x;
+    size++;
+}
+
+void delete(int pos) {
+    if (size == 0) return;
+    if (pos < 0 || pos >= size) return;
+
+    for (int i = pos; i < size - 1; i++) {
+        arr[i] = arr[i + 1];
+    }
+    size--;
+}
+
+void printArray() {
+    for (int i = 0; i < size; i++) printf("%d ", arr[i]);
+    printf("\n");
+}
+
+int main() {
+    int n;
+
+    printf("kac eleman: ");
+    scanf("%d", &n);
+
+    for (int i = 0; i < n; i++) {
+        scanf("%d", &arr[i]);
+    }
+    size = n;
+
+    printArray();
+
+    insert(2, 99);
+    printArray();
+
+    delete(3);
+    printArray();
+
+    return 0;
+}
