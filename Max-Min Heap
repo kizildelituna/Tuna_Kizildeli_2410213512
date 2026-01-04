@@ -1,0 +1,170 @@
+// Max Heap //
+
+#include <stdio.h>
+
+#define MAX 100
+
+int heap[MAX];
+int size = 0;
+
+void swap(int *a, int *b) {
+    int t = *a;
+    *a = *b;
+    *b = t;
+}
+
+void heapifyUp(int i) {
+    while (i > 0) {
+        int p = (i - 1) / 2;
+        if (heap[i] > heap[p]) {
+            swap(&heap[i], &heap[p]);
+            i = p;
+        } else break;
+    }
+}
+
+void heapifyDown(int i) {
+    while (1) {
+        int l = 2 * i + 1;
+        int r = 2 * i + 2;
+        int t = i;
+
+        if (l < size && heap[l] > heap[t]) t = l;
+        if (r < size && heap[r] > heap[t]) t = r;
+
+        if (t != i) {
+            swap(&heap[i], &heap[t]);
+            i = t;
+        } else break;
+    }
+}
+
+void insert(int x) {
+    if (size < MAX) {
+        heap[size] = x;
+        heapifyUp(size);
+        size++;
+    }
+}
+
+int removeMax() {
+    if (size == 0) return -1;
+    int root = heap[0];
+    heap[0] = heap[size - 1];
+    size--;
+    heapifyDown(0);
+    return root;
+}
+
+void printHeap() {
+    for (int i = 0; i < size; i++) printf("%d ", heap[i]);
+    printf("\n");
+}
+
+int main() {
+    int n, x;
+
+    printf("kac eleman: ");
+    scanf("%d", &n);
+
+    for (int i = 0; i < n; i++) {
+        scanf("%d", &x);
+        insert(x);
+    }
+
+    printf("heap: ");
+    printHeap();
+
+    printf("max silindi: %d\n", removeMax());
+
+    printf("heap: ");
+    printHeap();
+
+    return 0;
+}
+
+// -------------------------------------------------------------------------------//
+
+// MIN HEAP //
+
+// MAX =100 TANIMLANDI // 
+
+
+int heap[MAX];
+int size = 0;
+
+void swap(int *a, int *b) {
+    int t = *a;
+    *a = *b;
+    *b = t;
+}
+
+void heapifyUp(int i) {
+    while (i > 0) {
+        int p = (i - 1) / 2;
+        if (heap[i] < heap[p]) {
+            swap(&heap[i], &heap[p]);
+            i = p;
+        } else break;
+    }
+}
+
+void heapifyDown(int i) {
+    while (1) {
+        int l = 2 * i + 1;
+        int r = 2 * i + 2;
+        int t = i;
+
+        if (l < size && heap[l] < heap[t]) t = l;
+        if (r < size && heap[r] < heap[t]) t = r;
+
+        if (t != i) {
+            swap(&heap[i], &heap[t]);
+            i = t;
+        } else break;
+    }
+}
+
+void insert(int x) {
+    if (size < MAX) {
+        heap[size] = x;
+        heapifyUp(size);
+        size++;
+    }
+}
+
+int removeMin() {
+    if (size == 0) return -1;
+    int root = heap[0];
+    heap[0] = heap[size - 1];
+    size--;
+    heapifyDown(0);
+    return root;
+}
+
+void printHeap() {
+    for (int i = 0; i < size; i++) printf("%d ", heap[i]);
+    printf("\n");
+}
+
+int main() {
+    int n, x;
+
+    printf("kac eleman: ");
+    scanf("%d", &n);
+
+    for (int i = 0; i < n; i++) {
+        scanf("%d", &x);
+        insert(x);
+    }
+
+    printf("heap: ");
+    printHeap();
+
+    printf("min silindi: %d\n", removeMin());
+
+    printf("heap: ");
+    printHeap();
+
+    return 0;
+}
