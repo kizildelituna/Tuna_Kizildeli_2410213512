@@ -1,0 +1,105 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+struct node {
+    int data;
+    struct node *next;
+};
+
+struct node *head = NULL;
+
+void insertAfter(int key, int x) {
+    struct node *p = head;
+    if (p == NULL) return;
+
+    do {
+        if (p->data == key) {
+            struct node *n = malloc(sizeof(struct node));
+            n->data = x;
+            n->next = p->next;
+            p->next = n;
+            return;
+        }
+        p = p->next;
+    } while (p != head);
+}
+
+void deleteNode(int key) {
+    if (head == NULL) return;
+
+    struct node *curr = head;
+    struct node *prev = NULL;
+
+    do {
+        if (curr->data == key) {
+            if (curr == head) {
+                struct node *last = head;
+                while (last->next != head) last = last->next;
+
+                if (last == head) {
+                    free(head);
+                    head = NULL;
+                } else {
+                    last->next = head->next;
+                    struct node *tmp = head;
+                    head = head->next;
+                    free(tmp);
+                }
+            } else {
+                prev->next = curr->next;
+                free(curr);
+            }
+            return;
+        }
+        prev = curr;
+        curr = curr->next;
+    } while (curr != head);
+}
+
+void traverse() {
+    if (head == NULL) {
+        printf("liste bos\n");
+        return;
+    }
+
+    struct node *p = head;
+    do {
+        printf("%d ", p->data);
+        p = p->next;
+    } while (p != head);
+    printf("\n");
+}
+
+void insertFirst(int x) {
+    struct node *n = malloc(sizeof(struct node));
+    n->data = x;
+
+    if (head == NULL) {
+        head = n;
+        n->next = n;
+        return;
+    }
+
+    struct node *last = head;
+    while (last->next != head) last = last->next;
+
+    n->next = head;
+    last->next = n;
+    head = n;
+}
+
+int main() {
+    insertFirst(10);
+    insertFirst(5);
+    insertFirst(2);
+
+    traverse();
+
+    insertAfter(5, 7);
+    traverse();
+
+    deleteNode(10);
+    traverse();
+
+    return 0;
+}
